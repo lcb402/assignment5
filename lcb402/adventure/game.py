@@ -14,13 +14,16 @@ from operator import attrgetter
 from data import Data
 from model import Room, Message, Dwarf, Pirate
 
-# orig code
 #YESNO_ANSWERS = {'y': True, 'yes': True, 'n': False, 'no': False}
-# lcb402 code
-if YESNO_ANSWERS == 'y' or 'yes':
-   YESNO_ANSWERS = True
-if YESNO_ANSWERS == 'n' or 'no':
-   YESNO_ANSWERS = False
+# instead of dict... 
+
+YESNO_ANSWERS = [['y', True], ['yes', True], ['n', False], ['no', False]]
+def input_value(word):
+	for answer in YESNO_ANSWERS:
+		if word==answer[0]:
+			return answer[1]
+		else:
+			continue
 
 class Game(Data):
 
@@ -438,7 +441,7 @@ class Game(Data):
 
     def _do_command(self, words):
         if self.yesno_callback is not None:
-            answer = YESNO_ANSWERS.get(words[0], None)
+            answer = input_value(words)
             if answer is None:
                 if self.yesno_casual:
                     self.yesno_callback = None

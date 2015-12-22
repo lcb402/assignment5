@@ -1,6 +1,7 @@
 from unittest import TestCase
 from play import load_advent_dat
 from game import Game
+import sys
 
 class CommandTest(TestCase):
 
@@ -27,25 +28,23 @@ class CommandTest(TestCase):
             game.do_command(['enter'])  # so we are next to lamp
             game.do_command([word, 'lamp'])
 
-
-# start of lcb402 work
     def test_yes_no_do_command(self):
 	for word in self.words:
-	    game = Game()
-	    load_advent_dat(game)
-	    game.start()
-	    # This will test if argument to callback is True
-	    try:
-	    	game.yesno_callback = self.assertTrue
-	    	# Run the actual test
-            	game.do_command(['y'])
-	    	# Repeat for other cases ...
-	    	game.yesno_callback = self.assertTrue
-           	game.do_command(['yes'])
-	    	game.yesno_callback = self.assertFalse
-	    	game.do_command(['n'])
-	    	game.yesno_callback = self.assertFalse
-	    	game.do_command(['no'])
-	    except ValueError:
-		file=open("test_output1.txt","w")
-		file.write("Error in Yes/No entry\n")
+		game = Game()
+		load_advent_dat(game)
+		game.start()
+		
+		# test for valid inputs
+		game.yesno_callback = self.assertTrue
+		game.do_command(['y'])
+		game.yesno_callback = self.assertTrue
+                game.do_command(['yes'])
+		game.yesno_callback = self.assertFalse
+                game.do_command(['n'])
+		game.yesno_callback = self.assertFalse
+                game.do_command(['no'])
+
+		# test for invalid inputs
+		game.yesno_callback = self.assertIsNone
+                game.do_command(['not_y_n'])
+
